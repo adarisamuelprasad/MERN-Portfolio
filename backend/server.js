@@ -14,13 +14,10 @@ app.use(express.json()); // Allows server to accept JSON data
 // --- MongoDB Connection ---
 const uri = process.env.MONGO_URI; // Store your connection string in a .env file
 
-// THIS IS THE NEW DEBUGGING LINE
-console.log(`--- The MONGO_URI from Render is: [${uri}] ---`);
-
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 const connection = mongoose.connection;
 connection.once('open', () => {
-  console.log("MongoDB database connection established successfully");
+  console.log("✅ MongoDB database connection established successfully");
 });
 
 // --- Mongoose Schema and Model ---
@@ -45,6 +42,6 @@ app.post('/api/contact', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port: ${PORT}`);
+  console.log(`🚀 Server is running on port: ${PORT}`);
 });
 
