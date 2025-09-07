@@ -51,7 +51,7 @@ const About = () => {
       </div>
       <div className="hero-image">
         <img 
-          src="%PUBLIC_URL%/profile.png" 
+          src="C:\Users\samue\My Projects\MERN Portfolio\frontend\public\profile.png" 
           alt="Adari Samuel Prasad"
           onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/400x400/2d2945/ff79c6?text=ASP'; }}
         />
