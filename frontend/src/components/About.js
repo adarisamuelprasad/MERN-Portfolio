@@ -1,20 +1,65 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
+// This is the new Hero-style "About Me" section
 const About = () => {
+  const [loopNum, setLoopNum] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [text, setText] = useState('');
+  const [delta, setDelta] = useState(300 - Math.random() * 100);
+  const toRotate = [ "MERN Stack Developer", "AI & ML Enthusiast", "Software Developer" ];
+  const period = 2000;
+
+  useEffect(() => {
+    let ticker = setInterval(() => {
+      tick();
+    }, delta);
+
+    return () => { clearInterval(ticker) };
+  }, [text])
+
+  const tick = () => {
+    let i = loopNum % toRotate.length;
+    let fullText = toRotate[i];
+    let updatedText = isDeleting ? fullText.substring(0, text.length - 1) : fullText.substring(0, text.length + 1);
+
+    setText(updatedText);
+
+    if (isDeleting) {
+      setDelta(prevDelta => prevDelta / 2);
+    }
+
+    if (!isDeleting && updatedText === fullText) {
+      setIsDeleting(true);
+      setDelta(period);
+    } else if (isDeleting && updatedText === '') {
+      setIsDeleting(false);
+      setLoopNum(loopNum + 1);
+      setDelta(500);
+    }
+  }
+
   return (
-    <section id="about">
-      <h2>About Me</h2>
-      <p>
-        Hi there! I’m <strong>Adari Samuel Prasad</strong>, currently in my 2nd year of B.Tech specializing in <strong>AI & Machine Learning</strong> at Malla Reddy College of Engineering and Technology. Based in Hyderabad, I've always been driven by technology and a passion for solving complex problems using intelligent systems.
-      </p>
-      <p>
-        Over the last year, I’ve sharpened my skills in Python and Java, explored deep learning techniques, and completed real-world projects such as a <em>Smart Traffic Control System</em> with YOLO and a <em>Sign Language Translator</em> using computer vision. I thrive on experimenting with new technologies, contributing to hackathons, and collaborating in teams to transform ideas into practical solutions.
-      </p>
-      <p>
-        Outside of academics, I enjoy participating in tech communities, attending workshops, and expanding my knowledge in data science, web development, and AI-driven systems. My goal is to create impactful solutions that bridge technology and real-world needs.
-      </p>
+    // The "about" section now has a new class for styling
+    <section id="about" className="hero-section fade-in">
+      <div className="hero-text">
+        <h1>Hi, I'm Adari Samuel Prasad</h1>
+        {/* This is where the dynamic typing animation will appear */}
+        <p className="typing-text">{text}<span className="cursor"></span></p>
+        <p className="hero-subtitle">
+          A 2nd-year B.Tech student specializing in AI & Machine Learning with a hands-on passion for building and deploying full-stack web applications.
+        </p>
+      </div>
+      <div className="hero-image">
+        {/* THIS IS THE CORRECTED IMAGE PATH FOR A .PNG FILE */}
+        <img 
+          src="%PUBLIC_URL%/profile.png" 
+          alt="Adari Samuel Prasad"
+          onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/400x400/2d2945/ff79c6?text=ASP'; }}
+        />
+      </div>
     </section>
   );
 };
 
 export default About;
+
