@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
-// This array is now a constant outside the component, which is more efficient
-// and solves the React Hooks error.
+// This array is now a constant outside the component.
 const toRotate = [ "MERN Stack Developer", "AI & ML Enthusiast", "Software Developer" ];
-const period = 2000;
+// EDITED: Reduced the pause time after a word is typed.
+const period = 1000; // Was 2000ms
 
 const About = () => {
   const [loopNum, setLoopNum] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [text, setText] = useState('');
-  const [delta, setDelta] = useState(300 - Math.random() * 100);
+  // EDITED: Reduced the initial typing speed for a faster effect.
+  const [delta, setDelta] = useState(150 - Math.random() * 100); // Was 300
 
   const tick = useCallback(() => {
     let i = loopNum % toRotate.length;
@@ -28,7 +29,7 @@ const About = () => {
     } else if (isDeleting && updatedText === '') {
       setIsDeleting(false);
       setLoopNum(loopNum + 1);
-      setDelta(500);
+      setDelta(80); 
     }
   }, [isDeleting, loopNum, text]);
 
@@ -46,12 +47,12 @@ const About = () => {
         <h1>Hi, I'm Adari Samuel Prasad</h1>
         <p className="typing-text">{text}<span className="cursor"></span></p>
         <p className="hero-subtitle">
-          A 2nd-year B.Tech student specializing in AI & Machine Learning with a hands-on passion for building and deploying full-stack web applications.
+          B.Tech student specializing in AI & Machine Learning with a hands-on passion for building and deploying full-stack web applications.
         </p>
       </div>
       <div className="hero-image">
         <img 
-          src="C:\Users\samue\My Projects\MERN Portfolio\frontend\public\profile.png" 
+          src="/profile.jpg" 
           alt="Adari Samuel Prasad"
           onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/400x400/2d2945/ff79c6?text=ASP'; }}
         />
