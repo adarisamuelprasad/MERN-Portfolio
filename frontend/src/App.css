@@ -1,10 +1,10 @@
-/* EDITED: VS Code "Jellyfish" Inspired Theme */
+/* VS Code "Jellyfish" Inspired Theme */
 :root {
-  /* Light Mode: A complementary light theme with soft blues and pinks */
+  /* Light Mode */
   --bg: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   --text: #212529;
   --primary: #343a40;
-  --accent: #e63946; /* A contrasting red/pink */
+  --accent: #e63946;
   --card-bg: rgba(255, 255, 255, 0.8);
   --card-shadow: rgba(0, 0, 0, 0.1);
   --input-bg: #fff;
@@ -12,16 +12,16 @@
   --glow-color: rgba(230, 57, 70, 0.7);
 }
 
-/* EDITED: Dark Mode is now the "Jellyfish" theme */
+/* Dark Mode */
 body.dark {
   --text: #e0e0e0;
-  --primary: #12101e; /* Darker purple for header/footer */
-  --accent: #ff79c6; /* Vibrant Pink */
-  --card-bg: rgba(45, 41, 69, 0.7); /* Transparent deep purple */
+  --primary: #12101e;
+  --accent: #ff79c6;
+  --card-bg: rgba(45, 41, 69, 0.7);
   --card-shadow: rgba(0, 0, 0, 0.4);
   --input-bg: #12101e;
   --input-border: #4a456a;
-  --glow-color: rgba(255, 121, 198, 0.7); /* Pink Glow */
+  --glow-color: rgba(255, 121, 198, 0.7);
 }
 
 body {
@@ -31,74 +31,153 @@ body {
   font-family: 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
   margin: 0;
   transition: background 0.5s, color 0.5s;
-  overflow-x: hidden; /* Prevents scrollbar from large pseudo-element */
+  overflow-x: hidden;
 }
 
-/* EDITED: Removed the repeating SVG pattern and replaced it with a single gradient */
 body.dark {
   background: linear-gradient(180deg, #2d2945 0%, #12101e 100%);
   background-attachment: fixed;
 }
 
-/* EDITED: Added a keyframe animation for the new background monogram */
-@keyframes backgroundPulse {
-  0%, 100% {
-    opacity: 0.1;
-    text-shadow: 0 0 20px rgba(255, 121, 198, 0.1);
-  }
-  50% {
-    opacity: 0.15;
-    text-shadow: 0 0 40px rgba(255, 121, 198, 0.25);
-  }
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-/* EDITED: Added a pseudo-element to create the single, large, animated "ASP" monogram */
-body.dark::before {
-  content: 'ASP';
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 40vw; /* Scales with the viewport width */
-  font-weight: 700;
-  font-family: monospace;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(255, 121, 198, 0.15); /* Creates the hollow text effect */
-  text-shadow: 0 0 20px rgba(255, 121, 198, 0.1);
-  z-index: -1; /* Places it behind all other content */
-  pointer-events: none; /* Ensures it's not clickable */
-  animation: backgroundPulse 12s ease-in-out infinite;
+main {
+  flex-grow: 1;
 }
-
 
 section {
   padding: 60px 20px;
-  max-width: 1000px;
+  max-width: 1100px; /* Increased max-width for the new layout */
   margin: auto;
   opacity: 0;
   animation: fadeIn 1s ease-in forwards;
 }
 
 @keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
+  to { opacity: 1; }
 }
 
+/* --- NEW HERO SECTION STYLES --- */
+.hero-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  min-height: calc(100vh - 100px); /* Fill the viewport height minus header */
+}
+
+.hero-text {
+  flex: 1;
+  max-width: 600px;
+}
+
+.hero-text h1 {
+  font-size: 3.2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.typing-text {
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: var(--accent);
+  min-height: 3rem; /* Prevents layout shift as text changes */
+  display: block;
+}
+
+.cursor {
+  display: inline-block;
+  background-color: var(--accent);
+  margin-left: 0.1rem;
+  width: 3px;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { background-color: var(--accent); }
+  49% { background-color: var(--accent); }
+  50% { background-color: transparent; }
+  99% { background-color: transparent; }
+}
+
+.hero-subtitle {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-top: 1.5rem;
+}
+
+.hero-image {
+  flex-shrink: 0;
+}
+
+.hero-image img {
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid var(--accent);
+  box-shadow: 0 0 40px var(--glow-color);
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Floating animation for the profile picture */
+@keyframes float {
+	0% {
+		transform: translatey(0px);
+	}
+	50% {
+		transform: translatey(-20px);
+	}
+	100% {
+		transform: translatey(0px);
+	}
+}
+
+
+/* Responsive adjustments for the hero section */
+@media (max-width: 992px) {
+  .hero-section {
+    flex-direction: column; /* Stacks text on top of image on mobile */
+    text-align: center;
+    min-height: auto;
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+  .hero-text h1 {
+    font-size: 2.5rem;
+  }
+  .hero-image img {
+    width: 280px;
+    height: 280px;
+    margin-top: 2rem;
+  }
+}
+/* --- END OF NEW HERO STYLES --- */
+
+
 h2 {
+  text-align: center; /* Center section headings */
   border-bottom: 3px solid var(--accent);
   display: inline-block;
   padding-bottom: 8px;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
   font-size: 2.2rem;
   font-weight: 600;
 }
 
-/* Neon glow effect for h2 in dark mode */
+.section-title-container {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
 body.dark h2 {
   text-shadow: 0 0 8px var(--glow-color);
 }
-
 
 /* Header and Footer Styles */
 header, footer {
@@ -108,10 +187,10 @@ header, footer {
   text-align: center;
   border-bottom: 1px solid #30363d;
 }
-body.dark header {
-    border-bottom: 1px solid var(--input-border);
-}
 
+body.dark header {
+  border-bottom: 1px solid var(--input-border);
+}
 
 nav {
   display: flex;
@@ -165,14 +244,14 @@ nav ul a:hover {
   font-size: 24px;
 }
 
-/* Skills Section */
-.skills-container {
+/* Skills, Projects, and Contact Styles */
+.skills-container, .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 25px;
 }
 
-.skill-category {
+.skill-category, .project-card {
   background: var(--card-bg);
   backdrop-filter: blur(10px);
   border-radius: 10px;
@@ -181,20 +260,18 @@ nav ul a:hover {
   transition: transform 0.3s, box-shadow 0.3s;
   border: 1px solid transparent;
 }
-body.dark .skill-category {
+body.dark .skill-category, body.dark .project-card {
     border: 1px solid var(--input-border);
 }
 
-.skill-category:hover {
+.skill-category:hover, .project-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 10px 20px var(--card-shadow);
 }
-/* Neon glow on hover for dark mode cards */
-body.dark .skill-category:hover {
+body.dark .skill-category:hover, body.dark .project-card:hover {
     border-color: var(--glow-color);
     box-shadow: 0 0 20px rgba(255, 121, 198, 0.3);
 }
-
 
 .skill-category h3 {
   display: flex;
@@ -221,52 +298,21 @@ body.dark .skill-category:hover {
   font-size: 1rem;
 }
 
-
-/* Projects Section */
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 25px;
-}
-
-.project-card {
-  background: var(--card-bg);
-  backdrop-filter: blur(10px);
-  padding: 25px;
-  border-radius: 8px;
-  box-shadow: 0 5px 10px var(--card-shadow);
-  transition: transform 0.3s, box-shadow 0.3s;
-  border: 1px solid transparent;
-}
-
-body.dark .project-card {
-    border: 1px solid var(--input-border);
-}
-
-.project-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 10px 20px var(--card-shadow);
-}
-
-/* Neon glow on hover for dark mode cards */
-body.dark .project-card:hover {
-    border-color: var(--glow-color);
-    box-shadow: 0 0 20px rgba(255, 121, 198, 0.3);
-}
-
 .project-card h3 {
   margin-top: 0;
   color: var(--accent);
 }
 
-/* Contact Section */
 form {
   display: flex;
   flex-direction: column;
+  max-width: 600px; /* Center the form */
+  margin: 0 auto;
 }
 
 form input, form textarea {
   width: 100%;
+  box-sizing: border-box; /* Ensures padding doesn't affect width */
   margin: 10px 0;
   padding: 12px;
   border: 1px solid var(--input-border);
@@ -278,7 +324,7 @@ form input, form textarea {
 
 form button {
   background: var(--accent);
-  color: #12101e; /* Dark text on bright button */
+  color: #12101e;
   padding: 12px 20px;
   border: none;
   border-radius: 5px;
@@ -286,10 +332,9 @@ form button {
   font-size: 1rem;
   font-weight: bold;
   transition: background-color 0.3s, box-shadow 0.3s;
-  align-self: flex-start;
+  align-self: center; /* Center the button */
 }
 
-/* Neon glow for form button in dark mode */
 body.dark form button {
     box-shadow: 0 0 15px var(--glow-color);
 }
@@ -315,19 +360,5 @@ form button:hover {
 .socials a:hover {
   color: var(--accent);
   transform: scale(1.2);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  nav {
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-  }
-  nav ul {
-    flex-direction: column;
-    width: 100%;
-    gap: 10px;
-  }
 }
 
