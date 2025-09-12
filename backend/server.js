@@ -7,14 +7,15 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// --- THIS IS THE FIX ---
-// We are now telling the server to only accept requests from your live Netlify site.
+// --- THIS IS THE MODIFICATION FOR VERCEL ---
+// This allows the server to accept requests from the URL you will set
+// in your Vercel environment variables, while still working locally.
 const corsOptions = {
-  origin: 'https://samuel-prasad-portfolio.netlify.app',
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
   optionsSuccessStatus: 200 // For legacy browser support
 };
 app.use(cors(corsOptions));
-// --- END OF FIX ---
+// --- END OF MODIFICATION ---
 
 app.use(express.json()); // Allows server to accept JSON data
 
@@ -44,7 +45,6 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port: ${PORT}`);
-});
+// This is important for Vercel to correctly handle the serverless function
+module.exports = app;
 
