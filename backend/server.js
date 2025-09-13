@@ -1,4 +1,3 @@
-// backend/server.js
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -7,19 +6,20 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// --- THIS IS THE MODIFICATION FOR VERCEL ---
-// This allows the server to accept requests from the URL you will set
-// in your Vercel environment variables, while still working locally.
 const corsOptions = {
   origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-  optionsSuccessStatus: 200 // For legacy browser support
+  optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
-// --- END OF MODIFICATION ---
 
-app.use(express.json()); // Allows server to accept JSON data
+app.use(express.json());
 
-const uri = process.env.MONGO_URI; 
+// --- FIX FOR MONGOOSE DEPRECATION WARNING ---
+// This suppresses the warning you saw in your logs.
+mongoose.set('strictQuery', true);
+// --- END OF FIX ---
+
+const uri = process.env.MONGO_URI;
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 const connection = mongoose.connection;
 connection.once('open', () => {
@@ -45,6 +45,12 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
-// This is important for Vercel to correctly handle the serverless function
-module.exports = app;
+// --- THIS IS THE CRITICAL CHANGE FOR RENDER ---
+// This starts the server and makes it listen on the port provided by Render.
+app.listen(PORT, () => {
+  console.log(`Server is running on port: ${PORT}`);
+});
+// --- END OF CHANGE ---
 
+// The line below is for Vercel ONLY and must be removed for Render.
+// module.exports = app; 
