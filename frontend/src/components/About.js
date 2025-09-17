@@ -47,8 +47,9 @@ const About = () => {
         <h1>Hi, I'm Adari Samuel Prasad</h1>
         <p className="typing-text">{text}<span className="cursor"></span></p>
         <p className="hero-subtitle">
-          B.Tech student specializing in AI & Machine Learning with a hands-on passion for building and deploying full-stack web applications.
+            B.Tech student specializing in Artificial Intelligence & Machine Learning, with a strong passion for creating innovative solutions and deploying scalable full-stack web applications.
         </p>
+
       </div>
       <div className="hero-image">
         <img 

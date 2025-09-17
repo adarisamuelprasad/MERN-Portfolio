@@ -3,21 +3,21 @@ import React, { useState } from 'react';
 const Contact = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [statusMessage, setStatusMessage] = useState('');
+  const [isSending, setIsSending] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // 2. Helper function to encode form data for Netlify
   const encode = (data) => {
     return Object.keys(data)
       .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
       .join("&");
   };
 
-  // 3. Updated handleSubmit function for Netlify AJAX forms
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsSending(true);
     setStatusMessage('Sending...');
 
     fetch("/", {
@@ -26,55 +26,70 @@ const Contact = () => {
       body: encode({ "form-name": "contact", ...formData })
     })
     .then(() => {
-        setStatusMessage("Message sent successfully!");
+        setIsSending(false);
+        setStatusMessage("✅ Message sent successfully!");
         setFormData({ name: '', email: '', message: '' });
     })
     .catch(error => {
-        setStatusMessage("An error occurred. Please try again.");
+        setIsSending(false);
+        setStatusMessage("❌ An error occurred. Please try again.");
         console.error("Form submission error:", error);
     });
   };
 
   return (
     <section id="contact" className="fade-in">
-      <h2>Contact Me</h2>
-      {/* 1. Add Netlify attributes to the form tag */}
-      <form 
-        id="contactForm" 
-        name="contact" 
-        method="POST" 
-        data-netlify="true" 
-        onSubmit={handleSubmit}
-      >
-        {/* This hidden input is required by Netlify for AJAX submissions */}
-        <input type="hidden" name="form-name" value="contact" />
-        
+      <div className="section-title-container">
+          <h2>Contact Me</h2>
+      </div>
+
+      {/* This is a standard React form with an onSubmit handler. */}
+      <form id="contactForm" name="contact" onSubmit={handleSubmit}>
+
+        <label htmlFor="name">Name</label>
         <input
           type="text"
+          id="name"
           name="name"
           placeholder="Your Name"
           value={formData.name}
           onChange={handleChange}
           required
         />
+
+        <label htmlFor="email">Email</label>
         <input
           type="email"
+          id="email"
           name="email"
           placeholder="Your Email"
           value={formData.email}
           onChange={handleChange}
           required
         />
+
+        <label htmlFor="message">Message</label>
         <textarea
+          id="message"
           name="message"
           placeholder="Your Message"
+          rows="6"
           value={formData.message}
           onChange={handleChange}
           required
         ></textarea>
-        <button type="submit">Send Message</button>
+
+        <button type="submit" disabled={isSending}>
+          {isSending ? 'Sending...' : 'Send Message'}
+        </button>
       </form>
-      {statusMessage && <p style={{ marginTop: '15px', textAlign: 'center' }}>{statusMessage}</p>}
+
+      {statusMessage && (
+        <p style={{ marginTop: '15px', textAlign: 'center', fontWeight: 'bold' }}>
+          {statusMessage}
+        </p>
+      )}
+
       <div className="socials">
         <a href="mailto:samuelprasadadari@gmail.com"><i className="fas fa-envelope"></i></a>
         <a href="https://www.linkedin.com/in/adarisamuelprasad" target="_blank" rel="noopener noreferrer"><i className="fab fa-linkedin"></i></a>

@@ -10,7 +10,6 @@
     />
     <title>Adari Samuel Prasad | Portfolio</title>
     
-    <!-- This is the crucial link for the icons (Font Awesome) to work -->
     <link 
       rel="stylesheet" 
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
@@ -19,8 +18,13 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     
-    <!-- Your entire React application will be rendered inside this div -->
     <div id="root"></div>
+    
+    <form name="contact" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <textarea name="message"></textarea>
+    </form>
     
   </body>
 </html>

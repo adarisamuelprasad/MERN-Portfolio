@@ -19,7 +19,10 @@ app.use(express.json());
 mongoose.set('strictQuery', true);
 // --- END OF FIX ---
 
-const uri = process.env.MONGO_URI;
+// WARNING: Hardcoding your database connection string is a security risk.
+// It's better to use environment variables (like process.env.MONGO_URI)
+// and set them in your hosting provider's dashboard (e.g., Render).
+const uri = "mongodb+srv://adarisamuelprasad:Samuel28042005@adari-samuel-prasad-por.sm0my3g.mongodb.net/?retryWrites=true&w=majority&appName=adari-samuel-prasad-portfolio";
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 const connection = mongoose.connection;
 connection.once('open', () => {
@@ -29,7 +32,7 @@ connection.once('open', () => {
 const messageSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
-  message: { type: String, required: true },
+  message: { type: String, required:true },
 }, { timestamps: true });
 
 const Message = mongoose.model('Message', messageSchema);
@@ -53,4 +56,5 @@ app.listen(PORT, () => {
 // --- END OF CHANGE ---
 
 // The line below is for Vercel ONLY and must be removed for Render.
-// module.exports = app; 
+// module.exports = app;
+
