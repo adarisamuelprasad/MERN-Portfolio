@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import emailjs from 'emailjs-com'; // Make sure to install: npm install emailjs-com
 
 const Contact = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
@@ -9,43 +10,36 @@ const Contact = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const encode = (data) => {
-    return Object.keys(data)
-      .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
-      .join("&");
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsSending(true);
     setStatusMessage('Sending...');
 
-    fetch("/", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: encode({ "form-name": "contact", ...formData })
-    })
+    emailjs.send(
+      'portfolio_contact',         // Service ID
+      'contact_form_template',     // Template ID
+      formData,
+      'OzlP3F9N42mNw4Xx1'         // Your Public Key
+    )
     .then(() => {
-        setIsSending(false);
-        setStatusMessage("✅ Message sent successfully!");
-        setFormData({ name: '', email: '', message: '' });
+      setIsSending(false);
+      setStatusMessage('✅ Message sent successfully!');
+      setFormData({ name: '', email: '', message: '' });
     })
-    .catch(error => {
-        setIsSending(false);
-        setStatusMessage("❌ An error occurred. Please try again.");
-        console.error("Form submission error:", error);
+    .catch((error) => {
+      setIsSending(false);
+      setStatusMessage('❌ An error occurred. Please try again.');
+      console.error('EmailJS error:', error);
     });
   };
 
   return (
     <section id="contact" className="fade-in">
       <div className="section-title-container">
-          <h2>Contact Me</h2>
+        <h2>Contact Me</h2>
       </div>
 
-      {/* This is a standard React form with an onSubmit handler. */}
-      <form id="contactForm" name="contact" onSubmit={handleSubmit}>
-
+      <form id="contactForm" onSubmit={handleSubmit}>
         <label htmlFor="name">Name</label>
         <input
           type="text"
