@@ -23,7 +23,7 @@ const Contact = () => {
     )
     .then(() => {
       setIsSending(false);
-      setStatusMessage('✅ Message sent successfully!');
+      setStatusMessage("Your message just made it to Samuel’s VIP list, response incoming");
       setFormData({ name: '', email: '', message: '' });
     })
     .catch((error) => {
