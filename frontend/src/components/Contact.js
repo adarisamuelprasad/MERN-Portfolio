@@ -16,10 +16,10 @@ const Contact = () => {
     setStatusMessage('Sending...');
 
     emailjs.send(
-      'contact_form_service',        // Correct Service ID
-      '__ejs-test-mail-service__',   // Template ID
+      'contact_form_service',      // Service ID
+      'contact_form_template',     // Template ID
       formData,
-      'OzlP3F9N42mNw4Xx1'           // Public Key
+      'OzlP3F9N42mNw4Xx1'         // Public Key
     )
     .then(() => {
       setIsSending(false);
