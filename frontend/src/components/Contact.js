@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import emailjs from '@emailjs/browser'; // Make sure to install: npm install @emailjs/browser
+import emailjs from '@emailjs/browser'; // npm install @emailjs/browser
 
 const Contact = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
@@ -16,10 +16,10 @@ const Contact = () => {
     setStatusMessage('Sending...');
 
     emailjs.send(
-      'portfolio_contact',        // Service ID
-      'contact_form_template',    // Template ID
+      'contact_form_service',        // Correct Service ID
+      '__ejs-test-mail-service__',   // Template ID
       formData,
-      'OzlP3F9N42mNw4Xx1'        // Public Key
+      'OzlP3F9N42mNw4Xx1'           // Public Key
     )
     .then(() => {
       setIsSending(false);
