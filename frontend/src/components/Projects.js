@@ -20,7 +20,7 @@ const Projects = () => {
 
 
         {/* --- AarogyaLink --- */}
-        <div className="project-card">
+        {/* <div className="project-card">
           <h3>🏥 AarogyaLink</h3>
           <p>AI-driven healthcare web app for symptom-based hospital recommendations, insurance filters, and scheme-based navigation.</p>
           <div className="project-tech">
@@ -31,7 +31,7 @@ const Projects = () => {
             <a href="https://aarogya-link.vercel.app/" target="_blank" rel="noopener noreferrer" className="button">Live Demo</a>
             <a href="https://github.com/adarisamuelprasad/AarogyaLink" target="_blank" rel="noopener noreferrer" className="button">GitHub</a>
           </div>
-        </div>
+        </div> */}
 
 
         {/* --- MERN Portfolio --- */}
