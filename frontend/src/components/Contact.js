@@ -1,94 +1,62 @@
 import React, { useState } from 'react';
-import emailjs from '@emailjs/browser'; // npm install @emailjs/browser
+import emailjs from '@emailjs/browser';
+import { toast } from 'react-toastify';
 
 const Contact = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [statusMessage, setStatusMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
 
+  // Use env variables for keys:
+  const SERVICE_ID = process.env.REACT_APP_EMAILJS_SERVICE_ID;
+  const TEMPLATE_ID = process.env.REACT_APP_EMAILJS_TEMPLATE_ID;
+  const PUBLIC_KEY = process.env.REACT_APP_EMAILJS_PUBLIC_KEY;
+
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsSending(true);
-    setStatusMessage('Sending...');
 
-    emailjs.send(
-      'contact_form_service',      // Service ID
-      'contact_form_template',     // Template ID
-      formData,
-      'OzlP3F9N42mNw4Xx1'         // Public Key
-    )
-    .then(() => {
-      setIsSending(false);
-      setStatusMessage("Your message just made it to Samuel’s VIP list, response incoming");
-      setFormData({ name: '', email: '', message: '' });
-    })
-    .catch((error) => {
-      setIsSending(false);
-      setStatusMessage('❌ An error occurred. Please try again.');
-      console.error('EmailJS error:', error);
-    });
+    const templateParams = {
+      from_name: formData.name,
+      from_email: formData.email,
+      message: formData.message,
+      sent_at: new Date().toLocaleString()
+    };
+
+    emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY)
+      .then(() => {
+        setIsSending(false);
+        setFormData({ name: '', email: '', message: '' });
+        toast.success("Got it! Thanks for reaching out. I'll be in touch shortly!");
+      })
+      .catch((error) => {
+        setIsSending(false);
+        console.error('EmailJS error:', error);
+        toast.error("❌ Oops! Couldn't send. Try again later.");
+      });
   };
 
   return (
-    <section id="contact" className="fade-in">
+    <section id="contact">
       <div className="section-title-container">
-        <h2>Contact Me</h2>
+        <h2 data-aos="zoom-in">Contact Me</h2>
       </div>
 
-      <form id="contactForm" onSubmit={handleSubmit}>
+      <form id="contactForm" onSubmit={handleSubmit} data-aos="fade-up">
         <label htmlFor="name">Name</label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          placeholder="Your Name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-        />
+        <input name="name" id="name" type="text" placeholder="Your Name" required value={formData.name} onChange={handleChange} />
 
         <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          placeholder="Your Email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
+        <input name="email" id="email" type="email" placeholder="Your Email" required value={formData.email} onChange={handleChange} />
 
         <label htmlFor="message">Message</label>
-        <textarea
-          id="message"
-          name="message"
-          placeholder="Your Message"
-          rows="6"
-          value={formData.message}
-          onChange={handleChange}
-          required
-        ></textarea>
+        <textarea name="message" id="message" rows="6" placeholder="Your Message" required value={formData.message} onChange={handleChange} />
 
-        <button type="submit" disabled={isSending}>
-          {isSending ? 'Sending...' : 'Send Message'}
-        </button>
+        <button type="submit" disabled={isSending}>{isSending ? 'Sending...' : 'Send Message'}</button>
       </form>
-
-      {statusMessage && (
-        <p style={{ marginTop: '15px', textAlign: 'center', fontWeight: 'bold' }}>
-          {statusMessage}
-        </p>
-      )}
-
-      <div className="socials">
-        <a href="mailto:samuelprasadadari@gmail.com"><i className="fas fa-envelope"></i></a>
-        <a href="https://www.linkedin.com/in/adarisamuelprasad" target="_blank" rel="noopener noreferrer"><i className="fab fa-linkedin"></i></a>
-        <a href="tel:+919515237789"><i className="fas fa-phone"></i></a>
-      </div>
     </section>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
-// Import Components
+// Components
 import Header from './components/Header';
 import About from './components/About';
 import Skills from './components/Skills';
@@ -9,21 +9,29 @@ import Projects from './components/Projects';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 
+// Toast for contact notifications
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+// Optional: AOS animations
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 function App() {
-  // State to manage the theme (light or dark)
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+  // Theme default from localStorage
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
 
-  // Effect to apply the theme to the body whenever it changes
   useEffect(() => {
-    document.body.className = theme === 'dark' ? 'dark' : '';
+    // Apply theme class to body
+    document.body.classList.remove('light', 'dark');
+    document.body.classList.add(theme === 'light' ? 'light' : 'dark');
     localStorage.setItem('theme', theme);
+
+    // Initialize AOS
+    AOS.init({ duration: 900, once: true, offset: 120 });
   }, [theme]);
 
-  // Function to toggle the theme
-  const toggleTheme = () => {
-    setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
-  };
+  const toggleTheme = () => setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
 
   return (
     <>
@@ -35,6 +43,7 @@ function App() {
         <Contact />
       </main>
       <Footer />
+      <ToastContainer position="top-center" />
     </>
   );
 }

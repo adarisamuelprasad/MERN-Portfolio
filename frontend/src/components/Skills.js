@@ -9,12 +9,12 @@ const skillsData = [
   {
     category: "AI/ML & Libraries",
     icon: "fas fa-brain",
-    skills: ["NumPy", "Pandas", "Scikit-learn", "TensorFlow & Keras", "Deep Learning", "Computer Vision"]
+    skills: ["NumPy", "Pandas", "Scikit-learn", "TensorFlow", "Keras", "Deep Learning", "Computer Vision"]
   },
   {
     category: "Web Development",
     icon: "fas fa-globe",
-    skills: ["MERN Stack (MongoDB, Express, React.js, Node.js)", "REST APIs", "HTML & CSS"]
+    skills: ["MERN Stack", "REST APIs", "HTML", "CSS", "JavaScript"]
   },
   {
     category: "Mobile Development",
@@ -24,7 +24,7 @@ const skillsData = [
   {
     category: "Tools & Platforms",
     icon: "fas fa-wrench",
-    skills: ["VS Code / IntelliJ IDEA", "Git & GitHub", "Firebase Hosting & Cloud", "Google Cloud Platform", "Linux / Ubuntu"]
+    skills: ["VS Code", "IntelliJ IDEA", "Git & GitHub", "Firebase", "Google Cloud Platform", "Linux"]
   },
   {
     category: "Soft Skills",
@@ -36,16 +36,18 @@ const skillsData = [
 const Skills = () => {
   return (
     <section id="skills">
-      <h2>My Skills</h2>
+      <div className="section-title-container">
+        <h2 data-aos="zoom-in">My Skills</h2>
+      </div>
       <div className="skills-container">
         {skillsData.map((category, index) => (
-          <div key={index} className="skill-category">
+          <div key={index} className="skill-category" data-aos="fade-up" data-aos-delay={index * 80}>
             <h3><i className={category.icon}></i> {category.category}</h3>
-            <ul>
+            <div className="skills-list">
               {category.skills.map((skill, i) => (
-                <li key={i}>{skill}</li>
+                <span key={i} className="skill-badge">{skill}</span>
               ))}
-            </ul>
+            </div>
           </div>
         ))}
       </div>
